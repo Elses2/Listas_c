@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 
 ////si encuentra una letra me da un 1
@@ -88,19 +89,35 @@ void clear(){
 void presentacion(){
     printf(" 1: Insertar nodo\n 2: Eliminar nodo \n 3: Mostrar lista \n 4: Cerrar programa\n");
 }
-struct Nodo{
 
-    char dato;
-    struct nodo *ptrSiguiente;
+struct Tarea{
+    char des[100];///descripcion
+    int comp;//complejidad
 
 };
-typedef struct Nodo nodo;
-typedef struct Nodo *ptrNodo;
+struct Trabajador{
+    int dni;
+    struct Tarea tareas[5];//maximo 5 tareas por persona
+    bool estres;// si esta estresado o no
+    int lugar;//poder ejecutivo judicial, ejecutivo o prensa
+    int partido ;// partidos politicos
+    int comp_max;//la complejidad masa alta de todas las tareas que tiene
+    int cant_t;//cantidad de tareas
+    
+
+};
+struct Nodo{
+    struct Trabajador trabajador;
+    struct Nodo *ptrsig;
+
+};
+typedef struct Nodo nodo; 
+typedef nodo *newptr;//puntero nodo
+typedef struct Tarea tarea;
+typedef struct Trabajador trabajador;
 int main()
 {
 
-    ptrNodo nuevo;
-    nuevo=malloc(sizeof(nodo));
     int n=2;
     char boton_c [20];
     int boton=0;
@@ -116,12 +133,7 @@ int main()
 
 
         switch(boton){
-        case 1:
-            scanf("%c", &nuevo->dato);
-            fflush(stdin);
-            printf("%c\n",nuevo->dato);
-
-
+        case 1: 
             break;
         case 2:
             break;
