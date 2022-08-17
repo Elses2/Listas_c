@@ -107,7 +107,7 @@ struct Trabajador{
 
 };
 struct Nodo{
-    struct Trabajador dato;
+    struct Trabajador *dato;
     struct Nodo *ptrsig;
 
 };
@@ -120,16 +120,6 @@ typedef struct Trabajador trabajador;
 
 ////funciones de estructuras:
 
-///esta funcio crea un nodo que contiene un trabajador
-nodo* crear_nodo(trabajador dato){
-    newptr nuevo;
-    nuevo= malloc(sizeof(nodo));
-    if(nuevo!=NULL){
-    nuevo->dato=dato;
-    }
-
-}
-
 ///Esta funcion devuelve una funcion tipo tarea--faltan aplicar controladores
 tarea* crear_tarea (){///n es el numero de tareas
 
@@ -137,9 +127,10 @@ tarea* crear_tarea (){///n es el numero de tareas
     int complejidad=0;
     char descripcion[100];
 
-
+        fflush(stdin);
         printf("Dime la descripcion de la tara: \n");
         gets(descripcion);
+        fflush(stdin);
         printf("Dime la complejidad de esta tara: \n");
         scanf("%d",&complejidad);
         fflush(stdin);
@@ -155,32 +146,28 @@ tarea* crear_tarea (){///n es el numero de tareas
 trabajador * crear_trabajador(){
     trabajador * nuevo=NULL;
     nuevo= malloc(sizeof(trabajador));
-
+    ////sin sentido
     int dni;
-    struct Tarea *tareas[5];
     bool estres=false;
     int lugar;
     int partido ;
     int comp_max;
     int cant_t;
+    ////
 
     printf("Dame el dni\n");
     scanf("%d",&dni);
     printf("Dame el lugar 1:poder tal, 2:tal,3:tal,4:tal\n");
     scanf("%d",&lugar);
-    printf("Dame el dni\n");
-    scanf("%d",&dni);
     printf("Dame el partido 1: 2: 3: 4:\n");
     scanf("%d",&partido);
     printf("Dime la cantidad de tareas que tiene este trabajador:\n");
     scanf("%d",&cant_t);
     for(int i=0; i<cant_t; i++){
-
-        tareas[i]=malloc(sizeof(tarea));
-        tareas[i]=crear_tarea();
-        nuevo->tareas[i]=tareas[i];
+        nuevo->tareas[i]=malloc(sizeof(tarea));
+        nuevo->tareas[i]=crear_tarea();
         ///si la complejidad de una tarea s mayor de 5 esta estresado osea estres es true
-        if(tareas[i]->comp>5){
+        if(nuevo->tareas[i]->comp>5){
 
             estres=true;
         }
@@ -194,11 +181,49 @@ trabajador * crear_trabajador(){
     nuevo->partido=partido;
     return nuevo;
 }
+///esta funcio crea un nodo que contiene un trabajador
+nodo* crear_nodo(trabajador *dato){
+    newptr nuevo;
+    nuevo= malloc(sizeof(nodo));
+    if(nuevo!=NULL){
+    nuevo->dato=dato;
+    nuevo->ptrsig=NULL;
+    }
+    return nuevo;
 
+}
+void insertar_nodo(struct Nodo **raiz, trabajador *dato){
+
+    newptr nuevo=NULL;
+    nuevo=crear_nodo(&dato);
+
+    if(nuevo != NULL){
+
+        nuevo->ptrsig=*raiz;
+        *raiz=nuevo;
+    }
+}
+
+void imprimir(struct Nodo **raiz){
+
+    struct Nodo **nuevo;
+    nuevo=raiz;
+
+
+    while(nuevo!=NULL){
+
+        printf("%d \n",(*nuevo)->dato->dni);
+        *nuevo=(*nuevo)->ptrsig;
+
+
+    }
+
+
+}
 
 int main()
 {
-    tarea *prueba=NULL;
+    newptr *raiz=NULL;
     int n=2;
     char boton_c [20];
     int boton=0;
@@ -215,8 +240,15 @@ int main()
 
         switch(boton){
         case 1:
+
+            ///raiz=crear_nodo(crear_trabajador());
+            insertar_nodo(&raiz,crear_trabajador());
+            printf("%d \n", (*raiz)->dato->dni);
+
             break;
         case 2:
+            imprimir(&raiz);
+
             break;
         case 3:
             break;
