@@ -87,7 +87,7 @@ void clear(){
 }
 
 void presentacion(){
-    printf(" 1: Insertar nodo\n 2: Eliminar nodo \n 3: Mostrar lista \n 4: Cerrar programa\n");
+    printf(" 1:Insertar Trabajador\n 2:Mostrar personas estresadas \n 3:saber si un empleado se encuentra en peligro \n 4:Pares enemigos\n 5:trabajadores con mayor complejidad \n 6:Trabajadores con una sola tarea\n 7:cerrar programa \n ?");
 }
 
 struct Tarea{
@@ -150,16 +150,16 @@ trabajador * crear_trabajador(){
     int dni;
     bool estres=false;
     int lugar;
-    int partido ;
-    int comp_max;
+    int partido;
+    int comp_max=0;
     int cant_t;
     ////
 
     printf("Dame el dni\n");
     scanf("%d",&dni);
-    printf("Dame el lugar 1:poder tal, 2:tal,3:tal,4:tal\n");
+    printf("Dame el lugar 1:poder judicial, 2:legislativo,3:ejecutivo,4:prensa\n");
     scanf("%d",&lugar);
-    printf("Dame el partido 1: 2: 3: 4:\n");
+    printf("Dame el partido 1:derecha  2:izquierda \n");
     scanf("%d",&partido);
     printf("Dime la cantidad de tareas que tiene este trabajador:\n");
     scanf("%d",&cant_t);
@@ -171,6 +171,7 @@ trabajador * crear_trabajador(){
 
             estres=true;
         }
+        if(comp_max<nuevo->tareas[i]->comp)comp_max=nuevo->tareas[i]->comp;
 
     }
     nuevo->cant_t=cant_t;
@@ -194,36 +195,25 @@ nodo* crear_nodo(trabajador *dato){
 }
 void insertar_nodo(struct Nodo **raiz, trabajador *dato){
 
-    newptr nuevo=NULL;
+    newptr *nuevo=NULL;
     nuevo=crear_nodo(&dato);
 
-    if(nuevo != NULL){
+    if(*nuevo != NULL){
 
-        nuevo->ptrsig=*raiz;
+        (*nuevo)->ptrsig=*raiz;
         *raiz=nuevo;
     }
 }
 
 void imprimir(struct Nodo **raiz){
 
-    struct Nodo **nuevo;
-    nuevo=raiz;
-
-
-    while(nuevo!=NULL){
-
-        printf("%d \n",(*nuevo)->dato->dni);
-        *nuevo=(*nuevo)->ptrsig;
-
-
-    }
-
+    printf("DNI:%d \n", (*raiz)->dato->dni);
 
 }
 
 int main()
 {
-    newptr *raiz=NULL;
+    struct Nodo *raiz=NULL;
     int n=2;
     char boton_c [20];
     int boton=0;
@@ -234,7 +224,7 @@ int main()
         gets(boton_c);
         fflush(stdin);
 
-        controlador_entero(boton_c,20,&boton,1,4);
+        controlador_entero(boton_c,20,&boton,1,7);
 
 
 
@@ -243,8 +233,7 @@ int main()
 
             ///raiz=crear_nodo(crear_trabajador());
             insertar_nodo(&raiz,crear_trabajador());
-            printf("%d \n", (*raiz)->dato->dni);
-
+            printf("%d \n", raiz->dato->dni );
             break;
         case 2:
             imprimir(&raiz);
@@ -253,6 +242,12 @@ int main()
         case 3:
             break;
         case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
 
             printf("Gracias por usarnos \n");
             n=4;
